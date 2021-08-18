@@ -16,6 +16,7 @@ void solve(){
 	int val; 
 	cin >> n; 
 	vector<int> boys; 
+	int ans= 0; 
 	for(int i = 0; i<n; i++){
 		cin >> val; 
 		boys.push_back(val);
@@ -27,28 +28,19 @@ void solve(){
 		cin >> val; 
 		girls.push_back(val); 
 	}
-	set<int> boys_indices; 
-	set<int> girls_indices; 
+	sort(girls.begin(), girls.end());
+	sort(boys.begin(), boys.end());
 
 	for(int i = 0; i < boys.size(); i++){
 		for(int j= 0; j< girls.size(); j++){
 			if(fit(boys[i],girls[j])){
-				boys_indices.insert(boys[i]);
-				girls_indices.insert(girls[j]);
-				cout << i << " " << j << endl; 
+				girls.erase(girls.begin()+j); 
+				ans++; 
+				break;
 			}
 		}
 	}
-
-	if(boys_indices.size() < girls_indices.size()){
-		cout << boys_indices.size() << endl;
-	}
-	else{
-		cout << girls_indices.size() << endl; 
-	}
-	for(auto it = boys_indices.begin(); it != boys_indices.end(); it++){
-		cout << *it ; 
-	}
+	cout << ans << endl; 
 }
 
 int main(){
