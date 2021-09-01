@@ -1,0 +1,89 @@
+#include<bits/stdc++.h>
+#include<string>
+
+
+using namespace std; 
+
+
+void solve(){
+	int t; 
+	cin >> t; 
+	while(t--){
+		int n; 
+		cin >> n; 
+		vector<long long> arr; 
+		vector<int> even_indices; 
+		vector<int> odd_indices; 
+		int count_odds = 0; 
+		int count_evens =0; 
+		for(int i =0; i<n; i++){
+			long long val; 
+			cin >> val; 
+			arr.push_back(val); 
+			if(val%2 ==0){
+				even_indices.push_back(i); 
+				count_evens++; 
+			}
+			else{
+				odd_indices.push_back(i); 
+				count_odds++; 
+			}
+		}
+		if(abs(count_odds-count_evens) >1){
+			cout << - 1 << endl; 
+		}
+		else{
+			int ans = 0; 
+			int p1 = 0; 
+			int	p2 = 0;
+			if(arr[0]%2 == 0){
+				for(int i =1; i<n; i++){
+					if(arr[i]%2==0){
+						while(even_indices[p1] !=i&& p1<count_evens){
+							p1++; 
+						}
+						if(p1>=count_evens){
+							p1 = count_evens-1; 
+						}
+						while(odd_indices[p2] < even_indices[p1]){
+							p2++; 
+						}
+						swap(arr[even_indices[p1]], arr[odd_indices[p2]]); 
+						ans+=odd_indices[p2] - even_indices[p1]; 
+					}
+				}
+			}
+			else{
+				for(int i =1; i<n-1; i++){
+					if(arr[i]%2==1){
+						while(odd_indices[p1] !=i&& p1<count_odds){
+							p1++; 
+						}
+						if(p1>=count_odds){
+							p1 = count_odds-1; 
+						}
+
+						while(even_indices[p2] < odd_indices[p1]){
+							p2++; 
+						}
+						swap(arr[odd_indices[p1]], arr[even_indices[p2]]); 
+						ans+=even_indices[p2] - odd_indices[p1]; 
+					}
+				}
+			}
+			for(int i =0; i<n; i++){
+				cout << arr[i] << " "; 
+			}
+			cout <<endl; 
+			cout << ans << endl; 
+		}
+
+		
+	}
+
+}
+
+int main(){
+	solve(); 
+	return 0; 
+}
