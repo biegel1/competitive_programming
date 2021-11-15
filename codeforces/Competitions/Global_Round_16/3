@@ -1,0 +1,67 @@
+#include<bits/stdc++.h>
+
+using namespace std; 
+
+
+
+
+unordered_map<int, pair<long long, long long>> remove_visited_segments(unordered_map<int , pair<long long,long long>> segments, vector<long long>points){
+	int n = points.size(); 
+	int m = segments.size(); 
+	bool visited[m] = {}; 
+	long long current_point; 
+	long long left, right; 
+	for(int i =0; i<n; i++){
+		current_point = points[i]; 
+		for(int j =0; j<segments.size(); j++){
+			left = segments[j].first; 
+			right = segments[j].second; 
+			if(current_point >= left&& current_point <=right){
+				visited[j] = true; 
+			}
+		}
+	}
+	for(int i =0; i<m; i++){
+		if(visited[i]){
+			segments.erase(i); 
+		}
+	}
+
+	return segments; 
+
+}
+
+void solve(){
+	int t; 
+	cin >> t; 
+	while(t--){
+		int n, m; 
+		cin >> n>>m; 
+		vector<long long> points; 
+		vector<bool> visited; 
+		unordered_map<int, pair<long long, long long>> segments; 
+		for(int i = 0; i<n; i++){
+			long long val; 
+			cin >> val; 
+			points.push_back(val); 
+		}
+		for(int i=0;i<m; i++){
+			long long l, r; 
+			cin >> l >> r; 
+			segments[i] = make_pair(l, r); 
+		}
+		segments = remove_visited_segments(segments, points); 
+
+		// iterate over map
+		for(auto u: segments){
+			cout << u.first << " "<< u.second.first<< " " << u.second.second<< endl; 
+		}
+
+	}
+
+}
+
+int main(){
+	solve(); 
+	return 0; 
+}

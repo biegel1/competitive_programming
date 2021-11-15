@@ -1,0 +1,117 @@
+#include<bits/stdc++.h>
+
+using namespace std; 
+
+string s; 
+int grid[7][7] = {0}; 
+int visited[7][7] = {0}; 
+int visited_cells = 0; 
+int ans =0; 
+
+void walk2(int row, int column, int visited_cells){
+	// There exists a symmetry along the horizontal axis
+	visited[row][column] = 1; 
+	visited_cells++; 
+	if(row == 6 && column == 0){
+		if(visited_cells == 49){
+			ans++; 
+		}
+		else{
+			return; 
+		}
+	}
+	if(row<0 || row> 6 ||column <0 || column>6){
+		return; 
+	}
+
+	if((row == 0 && (column>0 && column<6)) || (row == 6 && (column>0 && column<6))){
+		if(visited[row][column] == 1 && visited[row][column-1]  ==0 && visited[row][column+1] ==0){
+			return; 
+		}
+	}
+
+	if((column == 0 && (row>0 && row<6)) || ( column== 6 && (row>0 && row<6))){
+		if(visited[row][column] == 1 && visited[row-1][column]  ==0 && visited[row+1][column] ==0){
+			return; 
+		}
+	}
+
+	if(row>0 && row<6 && column >0 && column <6){
+		if(visited[row][column+1] ==0 && visited[row][column-1] ==0 && visited[row+1][column]==1&& visited[row-1][column]==1){
+			return; 
+		}
+	}
+
+	if(row>0 && row<6 && column >0 && column <6){
+		if(visited[row][column+1] ==1 && visited[row][column-1] ==1 && visited[row+1][column]==0&& visited[row-1][column]==0){
+			return; 
+		}
+}
+	if((s[visited_cells-1] == '?' || s[visited_cells-1] == 'D')&& (visited[row+1][column] == 0)){
+		walk2(row+1, column, visited_cells); 
+		visited[row+1][column] = 0; 
+	}
+	if((s[visited_cells-1] == '?' || s[visited_cells-1] == 'R')&&(visited[row][column+1]== 0)){
+		walk2(row, column+1, visited_cells); 
+		visited[row][column+1] = 0; 
+	}
+	if((s[visited_cells-1] == '?' || s[visited_cells-1] == 'U') && (visited[row-1][column] == 0)){
+		walk2(row-1, column, visited_cells); 
+		visited[row-1][column] = 0; 
+	}
+	if((s[visited_cells-1] == '?' || s[visited_cells-1] == 'L') && (visited[row][column-1] ==0)){
+		walk2(row, column-1, visited_cells); 
+		visited[row][column-1] = 0; 
+	}
+}
+
+//recursive backtracking solution to find just all the existing paths
+void walk(int row, int column, int visited_cells){
+	grid[row][column] =1; 
+	visited_cells++; 
+	if(row ==6 && column ==0){
+		if(visited_cells ==49){
+			ans++; 
+		}
+		else{
+			return; 
+		}
+	}
+	if(row<0 ||row >6 || column <0 || column >6){
+		return;
+	}
+	if(grid[row][column+1] ==0 && grid[row][column-1] ==0&& grid[row-1][column] == 1 && grid[row+1][column] == 1){
+		return; 
+	}
+	if(grid[row-1][column] == 0){
+		walk(row-1, column, visited_cells);
+		grid[row-1][column] =0; 
+	}
+
+	if(grid[row+1][column] ==0){
+		walk(row+1, column, visited_cells); 
+		grid[row+1][column] =0; 
+	}
+
+	if(grid[row][column-1] == 0){
+		walk(row, column-1, visited_cells);  
+		grid[row][column-1] =0; 
+	}
+
+	if(grid[row][column+1] == 0){
+		walk(row, column+1, visited_cells); 
+		grid[row][column+1] =0; 
+	}
+}
+
+void solve(){
+	cin>> s; 
+	grid[0][0] = 1; 
+	walk2(0, 0, visited_cells); 
+	cout<<ans<< endl; 
+}
+
+int main(){
+	solve(); 
+	return 0; 
+}
